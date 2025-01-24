@@ -8,7 +8,7 @@ import subprocess
 
 
 #Definition db
-cred = credentials.Certificate('todos/serviceAccount.json')
+cred = credentials.Certificate(os.path.join(os.path.dirname(__file__), 'serviceAccount.json'))
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 

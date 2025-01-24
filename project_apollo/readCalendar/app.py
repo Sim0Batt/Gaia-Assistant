@@ -15,10 +15,14 @@ def main():
 
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
+            try:
+                creds.refresh(Request())
+            except Exception as e:
+                print(f'Error refreshing token: {e}')
+                creds = None
+        if not creds:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'readCalendar/credentials-calendar.json', SCOPES)
+                'project_apollo/readCalendar/credentials-calendar.json', SCOPES)
             creds = flow.run_local_server(port=0)
 
         with open('token.json', 'w') as token:
@@ -49,7 +53,7 @@ def main():
     else:
         for event in events:
             start = event['start'].get('dateTime', event['start'].get('date'))
-            print(f"{event.get('summary', 'No Title')}")
+            print(start, event['summary'])
 
 
 if __name__ == '__main__':

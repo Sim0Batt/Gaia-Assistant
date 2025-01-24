@@ -23,10 +23,10 @@ from tkinter import simpledialog
 from audio_set import setup as st
 from dict import dictionary as dt
 from summaryzeAI.predict import predict
-from todos.getTodos import FirestoreListener as fl
-from codeGeneratorCHATGPT.codeGenerator import codeGeneratorAPI as cg
-from notesReferences.notes import NoteLink as nl
-from readCalendar.readCalendar import ReadCalendar as calendar
+from project_apollo.todos.getTodos import FirestoreListener as fl
+from project_apollo.codeGeneratorCHATGPT.codeGenerator import codeGeneratorAPI as cg
+from project_apollo.notesReferences.notes import NoteLink as nl
+from project_apollo.readCalendar.readCalendar import ReadCalendar as calendar
 
 key_words =["apri", "leggi", "ciao", "pulisci", "chiudi", "cerca", "wolfram", "codice", "spegni", "gpt"]
 
@@ -63,13 +63,13 @@ def openApp(appName, text_in):
             subprocess.run(["python3", todo_path],)
             return "apro agenda"
 
-        elif appName == "cursor":
+        elif appName == "windsurf":
             try:
                 # Remove the --display flag for Cursor
-                subprocess.run(["cursor"],)
+                subprocess.run(["windsurf"],)
             except:
-                subprocess.run(["gnome-terminal", "--", "cursor"],)
-            return "apro cursor"
+                subprocess.run(["gnome-terminal", "--", "windsurf"],)
+            return "apro windsurf"
         elif appName == "appunti":
             nome_materia = show_input_dialog()
             OpenNotes(nome_materia)
@@ -85,15 +85,22 @@ def OpenNotes(nomeMateria):
     print(nomeMateria)
     if(nomeMateria != ""):
         subprocess.run(["gnome-terminal", "--", "bash", "-c", f"firefox -new-window {controller.GetLink()}; exit"])
-        subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://webapps.unitn.it/gestionecorsi/; exit"])
+        if nomeMateria != "reti logiche":
+            subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://webapps.unitn.it/gestionecorsi/; exit"])
+        else:
+            subprocess.run(["gnome-terminal", "--", "bash", "-c", "vim /home/simone/appuntiLatex/RetiLogiche.txt"])
+            subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://scenesnap.co/app/education/course/46f5bf86-02da-4357-8ba8-dca0ba9504d2; exit"])
 
     else:
         nomeMateria = show_input_dialog()
         controller = nl(str(nomeMateria).strip())
         if(nomeMateria != ""):
             subprocess.run(["gnome-terminal", "--", "bash", "-c", f"firefox -new-window {controller.GetLink()}; exit"])
-            subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://webapps.unitn.it/gestionecorsi/; exit"])
-
+            if nomeMateria != "reti logiche":
+                subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://webapps.unitn.it/gestionecorsi/; exit"])
+            else:
+                subprocess.run(["gnome-terminal", "--", "bash", "-c", "vim /home/simone/appuntiLatex/RetiLogiche.txt"])
+                subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://scenesnap.co/app/education/course/46f5bf86-02da-4357-8ba8-dca0ba9504d2; exit"])
         else:
             subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://www.overleaf.com/project; exit"])
 
