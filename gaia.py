@@ -40,57 +40,43 @@ def chooseAccount(decision):
         accountDoc = "simone.battisti.fm@gmail.com"
     return accountDoc
 
-def openApp(appName, text_in):    
-    try:
-        if appName == "firefox":
-            try:
-                subprocess.run(["firefox", "-new-window"],)
-            except:
-                subprocess.run(["gnome-terminal", "--", "firefox", "-new-window"],)
-            return "apro firefox"
+def openApp(appName, text_in):
+    if appName == "firefox":
+        subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window"])
 
-        elif appName == "cod":
-            try:
-                # Remove the --display flag for VS Code
-                subprocess.run(["code"],)
-            except:
-                subprocess.run(["gnome-terminal", "--", "code"],)
-            return "apro Visual Studio Code"
+    elif appName == "cod":
+        subprocess.run(["gnome-terminal", "--", "bash", "-c", "code"])
+        return "apro Visual Studio Code"
 
-        elif appName == "agenda" or appName == "todo":
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            todo_path = os.path.join(current_dir, "todos", "openTodo.py")
-            subprocess.run(["python3", todo_path],)
-            return "apro agenda"
+    elif appName in ["agenda", "todo"]:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        todo_path = os.path.join(current_dir, "project_apollo", "todos", "openTodo.py")
+        subprocess.run(["gnome-terminal", "--", "bash", "-c", f"python3 {todo_path}"])
+        return "apro agenda"
 
-        elif appName == "windsurf":
-            try:
-                # Remove the --display flag for Cursor
-                subprocess.run(["windsurf"],)
-            except:
-                subprocess.run(["gnome-terminal", "--", "windsurf"],)
-            return "apro windsurf"
-        elif appName == "appunti":
-            nome_materia = show_input_dialog()
-            OpenNotes(nome_materia)
-            
-                
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to open {appName}. Error: {e}")
-        return f"Failed to open {appName}"
+    elif appName == "appunti":
+        controller = nl("")
+        for item in controller.GetMaterie():
+            if(item in text_in):
+                controller = nl(item)
+                OpenNotes(item, controller)
+                return f"apro appunti {item}" 
+        nome_materia = show_input_dialog()
+        OpenNotes(nome_materia, controller)
+    
+    elif appName == "gpt":
+        subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://chatgpt.com; exit"])
 
 
-def OpenNotes(nomeMateria):
-    controller = nl(nomeMateria)
-    print(nomeMateria)
+def OpenNotes(nomeMateria, controller):
     if(nomeMateria != ""):
         subprocess.run(["gnome-terminal", "--", "bash", "-c", f"firefox -new-window {controller.GetLink()}; exit"])
-        if nomeMateria != "reti logiche":
-            subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://webapps.unitn.it/gestionecorsi/; exit"])
+        if nomeMateria == "reti logiche":
+            controller.openRetiLogiche()
+        elif nomeMateria == "avanzata":
+            controller.openProgAvanzata()
         else:
-            subprocess.run(["gnome-terminal", "--", "bash", "-c", "vim /home/simone/appuntiLatex/RetiLogiche.txt"])
-            subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://scenesnap.co/app/education/course/46f5bf86-02da-4357-8ba8-dca0ba9504d2; exit"])
-
+            subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://webapps.unitn.it/gestionecorsi/; exit"])
     else:
         nomeMateria = show_input_dialog()
         controller = nl(str(nomeMateria).strip())
@@ -99,20 +85,15 @@ def OpenNotes(nomeMateria):
             if nomeMateria != "reti logiche":
                 subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://webapps.unitn.it/gestionecorsi/; exit"])
             else:
-                subprocess.run(["gnome-terminal", "--", "bash", "-c", "vim /home/simone/appuntiLatex/RetiLogiche.txt"])
-                subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://scenesnap.co/app/education/course/46f5bf86-02da-4357-8ba8-dca0ba9504d2; exit"])
+               controller.openRetiLogiche()
         else:
             subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://www.overleaf.com/project; exit"])
 
 def show_input_dialog():
-    # Create a new Tkinter root window (hidden)
     root = tk.Tk()
-    root.withdraw()  # Hide the root window
-
-    # Show the input dialog
+    root.withdraw()  
     input_text = simpledialog.askstring("Input Dialog", "Please enter your input:")
 
-    # Print the received input
     if input_text is not None:
         print(f"Input received: {input_text}")
     else:
@@ -139,18 +120,12 @@ def open_popup(content, width, height):
     todos_box.mainloop()
 
 
-
-
-
-
 def generateCode(prompt):
     codeGenerator = cg(prompt)
     return codeGenerator.generate_code()
 
 
 class Gaia():
-
-    # MAIN
     def GetResponse(text_in):
         text_in = str(text_in)
         if("'" in text_in):
@@ -229,9 +204,6 @@ class Gaia():
             nomeFile = "test"
             pf = open(f"{nomeFile}.txt", "w")
             print(str(generateCode(text_in)))
-        
-        if w == "gpt":
-            subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://chatgpt.com; exit"])
         
         if w == "spegni":
             subprocess.run(["gnome-terminal", "--", "bash", "-c", "poweroff"])
