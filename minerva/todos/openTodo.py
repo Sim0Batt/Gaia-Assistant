@@ -8,7 +8,7 @@ import os
 import subprocess
 
 # Check if the serviceAccount.json file exists
-service_account_path = 'todos/serviceAccount.json'  # Update this path as needed
+service_account_path = 'minerva/todos/serviceAccount.json'  # Update this path as needed
 if not os.path.exists(service_account_path):
     raise FileNotFoundError("The serviceAccount.json file is missing. Please ensure it is in the correct directory.")
 

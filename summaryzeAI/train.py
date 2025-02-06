@@ -14,7 +14,7 @@ eval_dataset = Dataset.from_pandas(eval_df)
 
 # Load a pre-trained T5 model and tokenizer
 model = T5ForConditionalGeneration.from_pretrained('t5-small')
-tokenizer = T5Tokenizer.from_pretrained('t5-small', legacy=False)
+tokenizer = T5Tokenizer.from_pretrained('t5-small', legacy=False)   
 
 # Tokenization: Prepare inputs for the model
 def preprocess_data(example):
