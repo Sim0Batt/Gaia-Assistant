@@ -23,13 +23,20 @@ from tkinter import simpledialog
 from audio_set import setup as st
 from dict import dictionary as dt
 from summaryzeAI.predict import predict
-from project_apollo.todos.getTodos import FirestoreListener as fl
-from project_apollo.codeGeneratorCHATGPT.codeGenerator import codeGeneratorAPI as cg
-from project_apollo.notesReferences.notes import NoteLink as nl
-from project_apollo.readCalendar.readCalendar import ReadCalendar as calendar
+from minerva.todos.getTodos import FirestoreListener as fl
+from minerva.notesReferences.notes import NoteLink as nl
+from minerva.readCalendar.readCalendar import ReadCalendar as calendar
+from apollo.AI import AI as ai
 
-key_words =["apri", "leggi", "ciao", "pulisci", "chiudi", "cerca", "wolfram", "codice", "spegni", "gpt"]
+key_words =["apri", "leggi", "ciao", "chiudi", "ricerca", "wolfram", "codice", "spegni", "gpt", "debug"]
 
+
+
+
+aiRef = ai()
+
+def noneResponse(request):
+    return aiRef.GetGenericResponse(str(request))
 
 
 db = firestore.client()
@@ -43,6 +50,7 @@ def chooseAccount(decision):
 def openApp(appName, text_in):
     if appName == "firefox":
         subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window"])
+        return "apro Firefox"
 
     elif appName == "cod":
         subprocess.run(["gnome-terminal", "--", "bash", "-c", "code"])
@@ -50,7 +58,7 @@ def openApp(appName, text_in):
 
     elif appName in ["agenda", "todo"]:
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        todo_path = os.path.join(current_dir, "project_apollo", "todos", "openTodo.py")
+        todo_path = os.path.join(current_dir, "minerva", "todos", "openTodo.py")
         subprocess.run(["gnome-terminal", "--", "bash", "-c", f"python3 {todo_path}"])
         return "apro agenda"
 
@@ -59,24 +67,34 @@ def openApp(appName, text_in):
         for item in controller.GetMaterie():
             if(item in text_in):
                 controller = nl(item)
-                OpenNotes(item, controller)
+                OpenNotes(item)
                 return f"apro appunti {item}" 
         nome_materia = show_input_dialog()
-        OpenNotes(nome_materia, controller)
+        OpenNotes(nome_materia)
+        return "Aperti appunti"
     
     elif appName == "gpt":
         subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://chatgpt.com; exit"])
+        return "apro GPT"
+    
+    print("niente")
+    response = str(aiRef.GetGenericResponse(text_in))
+    open_popup(response, 500, 400)
+    return "niente"
+       
 
 
-def OpenNotes(nomeMateria, controller):
+def OpenNotes(nomeMateria):
+    controller = nl(nomeMateria)
     if(nomeMateria != ""):
-        subprocess.run(["gnome-terminal", "--", "bash", "-c", f"firefox -new-window {controller.GetLink()}; exit"])
         if nomeMateria == "reti logiche":
             controller.openRetiLogiche()
         elif nomeMateria == "avanzata":
             controller.openProgAvanzata()
         else:
             subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://webapps.unitn.it/gestionecorsi/; exit"])
+            subprocess.run(["gnome-terminal", "--", "bash", "-c", f"firefox -new-window {controller.GetLink()}; exit"])
+
     else:
         nomeMateria = show_input_dialog()
         controller = nl(str(nomeMateria).strip())
@@ -120,25 +138,22 @@ def open_popup(content, width, height):
     todos_box.mainloop()
 
 
-def generateCode(prompt):
-    codeGenerator = cg(prompt)
-    return codeGenerator.generate_code()
-
-
 class Gaia():
     def GetResponse(text_in):
-        text_in = str(text_in)
+        text_in = str(text_in).lower()
         if("'" in text_in):
             text_in = text_in.replace("'", " ")
         list_in = text_in.split()
 
-        if len(list_in) > 0 and not text_in in key_words:
+        if len(list_in) > 0 and (list_in[0] not in key_words):
             w = predict.summarize_text(text_in)
+            print(w)
             if ('"' in w):
                 w = w.replace('"', '')
             w = w.strip()
         else:
             w = list_in[0]
+
 
         if w == "chiudi":
             exit()
@@ -149,16 +164,11 @@ class Gaia():
         if w == "leggi":
             for word in list_in:
                 if word == "agenda":
-                    accountMenuTxt ="""
-    1) Personale (simonebatt51@gmail.com) \n
-    2) Factory (simone.battisti.fm@gmail.com)
-    """
                     accountDoc = ""
                     decision = simpledialog.askstring("Input", "Inserisci account (1 - 2):") 
                     while(int(decision) < 1 and int(decision) > 2):
                         decision = simpledialog.askstring("Input", "Inserisci account (1 - 2):") 
                     accountDoc = chooseAccount(int(decision))
-                    print(accountDoc)
                     todo_ref = db.collection((accountDoc))
                     todos = fl(accountDoc)
                     time.sleep(0.75)
@@ -174,11 +184,17 @@ class Gaia():
                         return str(content)
                     else:
                         open_popup("nessun calendario selezionato", 200, 100)
+                    return "Letto Calendario"
 
 
         if w == "apri":
+            countOpens = 0
             for word in list_in:
-                openApp(word, text_in)
+                openAppResponse = openApp(word, text_in)
+                if(countOpens > 0):
+                    return openAppResponse
+                return openAppResponse
+
 
         if w == "riproduci":
             if w in list_in:
@@ -188,22 +204,14 @@ class Gaia():
                 list_in.remove("youtube")
             txt = ' '.join(list_in)
             # pw.playonyt(txt)
-
-        if w == "cerca":
-            if "google" in list_in:
-                list_in.remove("google")
-            if "su" in list_in:
-                list_in.remove("su")
-            if w in list_in:
-                index = list_in.index(w)
-                del list_in[0:index+1]
-            txt = ' '.join(list_in)
-            # pw.search(txt)
-
-        if w == "codice":
-            nomeFile = "test"
-            pf = open(f"{nomeFile}.txt", "w")
-            print(str(generateCode(text_in)))
         
         if w == "spegni":
             subprocess.run(["gnome-terminal", "--", "bash", "-c", "poweroff"])
+
+        if w == "ricerca":
+            response = str(aiRef.GetGenericResponse(text_in))
+            open_popup(response, 500, 400)
+            
+        if w == "debug":
+            subprocess.run(["gnome-terminal", "--", "bash", "-c", "code /home/simone/gaiaWeb"])
+            subprocess.run(["gnome-terminal", "--", "bash", "-c", "code /home/simone/gaia"])
