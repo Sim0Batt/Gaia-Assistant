@@ -4,6 +4,8 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk, Gdk, GLib
 from gaia import Gaia
+gaiaReference = Gaia()
+
 
 class GaiaWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
@@ -64,7 +66,7 @@ class GaiaWindow(Gtk.ApplicationWindow):
             )
             
             # Get bot response
-            chatbot_response = str(Gaia.GetResponse(user_message))
+            chatbot_response = str(gaiaReference.get_response(user_message))
             end_iter = self.chat_display.get_end_iter()
             self.chat_display.insert_with_tags_by_name(
                 end_iter, f"Bot: {chatbot_response}\n", "bot_msg"

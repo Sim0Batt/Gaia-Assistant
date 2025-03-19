@@ -1,4 +1,5 @@
 from openai import OpenAI
+import ollama
 
 class AI:
     def __init__(self):
@@ -7,26 +8,17 @@ class AI:
         api_key="YOUR-API-KEY",
       )
 
-    def GetGenericResponse(self, message):
+    def generate_code(self, message):
       completion = self.client.chat.completions.create(
-        model="deepseek/deepseek-r1-distill-qwen-32b",
+        model="deepseek/deepseek-r1-distill-llama-70b:free",
         messages=[
           {
             "role": "user",
-            "content": f"rispondi a questa domanda in italiano: {message}"
+            "content": f"Generate the code for {message}. GIVE ME ONLY THE CODE, NO EXPLANATION AND NO INTRODUCTION"
           }
         ]
         )
       return completion.choices[0].message.content
 
-    def generateSummary(self, text_in):
-      completion = self.client.chat.completions.create(
-        model="deepseek/deepseek-r1-distill-qwen-32b",
-        messages=[
-          {
-            "role": "user",
-            "content": f"Sei un chatbot che può aprire applicazioni, spegnere pc, leggere file, ecc. Ora ti darò una frase, tu riassumila in una di queste parole [apri, leggi, ciao, chiudi, ricerca, wolfram, codice, spegni, gpt, debug], se non trovi una parola tra queste adatte ritorna la parola nessuno, ritornami solo la parola, nient'altro. La frase è: {text_in}"
-          }
-       ]
-      )
-      return completion.choices[0].message.content
+      
+
