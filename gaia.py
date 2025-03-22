@@ -20,13 +20,12 @@ import tkinter as tk
 from tkinter import simpledialog
 import datetime
 
-from audio_set import setup as st
-from dict import dictionary as dt
+from minerva.audio_set import setup as st
 from minerva.todos.getTodos import FirestoreListener as fl
 from minerva.notesReferences.notes import NoteLink as nl
 from minerva.readCalendar.readCalendar import ReadCalendar as calendar
 from apollo.AI import AI as ai
-from efesto.summarize_class import Summarizer as sm
+from ephaestus.summarize_class import Summarizer as sm
 
 
 
@@ -72,21 +71,21 @@ def open_popup(content, width, height):
 def open_app(list_of_words):
     if 'firefox' in list_of_words:
         subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window"])
-        return "apro Firefox"
+        return "opened Firefox"
     elif 'code' in list_of_words:
         subprocess.run(["gnome-terminal", "--", "bash", "-c", "code"])
-        return "apro Visual Studio Code"
+        return "opened Visual Studio Code"
     elif 'agenda' in list_of_words:
         open_todo()
-        return "apro agenda"
+        return "opened agenda"
     elif 'gpt' in list_of_words:
         subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://chatgpt.com/; exit"])
-        return "apro ChatGPT"
+        return "opened ChatGPT"
 
     
 def open_notes(list_of_words):
     subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://www.overleaf.com/project; exit"])
-    subprocess.run(["gnome-terminal", "--", "bash", "-c", "emacs università/appuntiLatex/"])
+    subprocess.run(["gnome-terminal", "--", "bash", "-c", "emacs /home/simone/università/appuntiLatex/"])
 
 
 def open_todo():
@@ -100,29 +99,44 @@ def open_todo():
     time.sleep(0.75)
     content = todos.get_data_string()
     open_popup(content, 300, 400)
-    return "letta agenda"
+    return "reded todo"
+
+def init_request(request):
+    return request.lower().replace("gaia", "").strip()
 
 class Gaia():
     def __init__(self):
         self.summarizer = sm()
         self.ai_reference = ai()
-
-    
     def get_response(self, text_in):
-        predict = self.summarizer.predict(text_in)
-        print(predict)
-        list_of_words = text_in.split()
-        if predict == "open":
-            open_app(list_of_words)
-        elif predict == "notes" or predict == "study":
-            open_notes(list_of_words)
-        elif predict == "read":
-            open_todo()
-            return "apro lettura"
-        elif predict == "code":
-            generated_code = self.ai_reference.generate_code(text_in)
-            date = datetime.datetime.now()
-            f = open(f"/home/simone/gaia/apollo/generated_code/generated-{str(date)[0:19]}.txt", "w")
-            f.write(generated_code)
-            f.close()
-            return "generato codice"
+        requests = []
+        if "and" in text_in:
+            requests = text_in.split('and')
+            for i in range(len(requests)):
+                requests[i] = requests[i].strip()
+        else:
+            requests.insert(0, text_in)
+
+        for request in requests:
+            request = init_request(request)
+            if request == 'close':
+                exit()
+            predict = self.summarizer.predict(request)
+            print(predict)
+            list_of_words = text_in.split()
+            if not ('gaia' in list_of_words):
+                return
+            if predict == "open":
+                open_app(list_of_words)
+            elif predict == "notes" or predict == "study":
+                open_notes(list_of_words)
+            elif predict == "read":
+                open_todo()
+                return "opened todo"
+            elif predict == "code":
+                generated_code = self.ai_reference.generate_code(text_in)
+                date = datetime.datetime.now()
+                f = open(f"/home/simone/gaia/apollo/generated_code/generated-{str(date)[0:19]}.txt", "w")
+                f.write(generated_code)
+                f.close()
+                return "generated code" 

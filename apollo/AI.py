@@ -5,7 +5,7 @@ class AI:
     def __init__(self):
       self.client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
-        api_key="YOUR-API-KEY",
+        api_key="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",
       )
 
     def generate_code(self, message):
@@ -14,7 +14,7 @@ class AI:
         messages=[
           {
             "role": "user",
-            "content": f"Generate the code for {message}. GIVE ME ONLY THE CODE, NO EXPLANATION AND NO INTRODUCTION"
+            "content": f"{message}. GIVE ME ONLY THE CODE, NO EXPLANATION AND NO INTRODUCTION"
           }
         ]
         )
