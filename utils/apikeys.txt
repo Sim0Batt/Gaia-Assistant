@@ -1,6 +1,0 @@
-Deepseek: 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
-
-python /home/simone/gaia/aether/manage.py runserver_plus --cert-file cert.pem --key-file key.pem
-
-ExecStart=python /usr/bin/python /home/simone/gaia/aether/manage.py runserver_plus --cert-file /home/simone/gaia/aether/cert.pem --key-file /home/simone/gaia/aether/key.pem
-

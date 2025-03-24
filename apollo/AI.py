@@ -5,7 +5,8 @@ class AI:
     def __init__(self):
       self.client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
-        api_key="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",
+        api_key="YOUR-API-KEY
+        ",
       )
 
     def generate_code(self, message):
