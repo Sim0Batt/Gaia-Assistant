@@ -87,9 +87,12 @@ Gaia-Assistant/
     python gaia_request_app.py "your request"
     ```
 
+## Web Page
+If you want to use the gaia web page that consent also the usage of vocal command (only on supported browsers), go to "https://gaiaassistant.netlify.app/" and run on "https://127.0.0.1:8000" the aether server. For running the server you need to generate a cert.pem and a key.pem to run the server on https so that the netlify site can get changes.
+
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes to simonebatt51@gmail.com.
 
 ## License
 
