@@ -20,9 +20,7 @@ import tkinter as tk
 from tkinter import simpledialog
 import datetime
 
-from utils.audio_set import setup as st
 from minerva.todos.getTodos import FirestoreListener as fl
-from minerva.notesReferences.notes import NoteLink as nl
 from minerva.readCalendar.readCalendar import ReadCalendar as calendar
 from apollo.AI import AI as ai
 from ephaestus.summarize_class import Summarizer as sm
