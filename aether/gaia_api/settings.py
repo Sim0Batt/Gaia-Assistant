@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-21(=4d^=26+50-l-k_vwb58s&c+nkw2!@vz6!f_=fm615*=xa7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -121,7 +121,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "http://192.168.1.115",
     "https://gaiaassistant.netlify.app",
     "https://127.0.0.1:8000",
     "http://localhost:8000",
