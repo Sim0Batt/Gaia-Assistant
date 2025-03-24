@@ -20,7 +20,7 @@ import tkinter as tk
 from tkinter import simpledialog
 import datetime
 
-from minerva.audio_set import setup as st
+from utils.audio_set import setup as st
 from minerva.todos.getTodos import FirestoreListener as fl
 from minerva.notesReferences.notes import NoteLink as nl
 from minerva.readCalendar.readCalendar import ReadCalendar as calendar
@@ -70,7 +70,8 @@ def open_popup(content, width, height):
 
 def open_app(list_of_words):
     if 'firefox' in list_of_words:
-        subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window"])
+        subprocess.run(["gnome-terminal", "--", "bash", "-c", "python /home/simone/gaia/utils/open_firefox.py"])
+
         return "opened Firefox"
     elif 'code' in list_of_words:
         subprocess.run(["gnome-terminal", "--", "bash", "-c", "code"])
@@ -83,8 +84,8 @@ def open_app(list_of_words):
         return "opened ChatGPT"
 
     
-def open_notes(list_of_words):
-    subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://www.overleaf.com/project; exit"])
+def open_notes():
+    subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window https://www.overleaf.com/project -new-tab https://webapps.unitn.it/gestionecorsi/"])
     subprocess.run(["gnome-terminal", "--", "bash", "-c", "emacs /home/simone/università/appuntiLatex/"])
 
 
@@ -129,7 +130,7 @@ class Gaia():
             if predict == "open":
                 open_app(list_of_words)
             elif predict == "notes" or predict == "study":
-                open_notes(list_of_words)
+                open_notes()
             elif predict == "read":
                 open_todo()
                 return "opened todo"
@@ -140,3 +141,6 @@ class Gaia():
                 f.write(generated_code)
                 f.close()
                 return "generated code" 
+            elif predict == "switchoff":
+                subprocess.run(["shutdown", "now"])
+                return "shutting down"

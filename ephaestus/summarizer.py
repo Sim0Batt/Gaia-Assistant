@@ -10,6 +10,7 @@ test_phrases = [
     "Launch the calculator app.",
     "open firefox",
     "need to study",
+    "power off the computer"
 ]
 
 summarizer._train_new_model()

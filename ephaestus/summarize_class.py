@@ -78,19 +78,33 @@ class Summarizer:
             "Time for revision", "Need to concentrate",
             "Gotta hit the books", "Time to learn stuff", "Help me study this",
             "Need to cram", "Let's get some studying done", "Better start studying"
+
+            #Switchoff category
+            "Shutdown the computer", "Turn off the PC", "Power down the system",
+            "Switch off my laptop", "Can you shut down?", "Time to power off",
+            "Please turn off the computer", "Shutdown now", "Power down",
+            "Turn off the machine", "System shutdown", "Close everything and shutdown",
+            "Shut down the PC", "Power off the laptop", "End all and shutdown",
+            "Time to turn off", "Shutdown system", "Power down now",
+            "Switch off system", "Turn off everything",
+            "Kill the power", "Shut it down", "Turn this thing off",
+            "Power it down", "Shutdown please", "Need to turn off", "Power off now"
         ]
 
+
         y_train = [
-            # 26 open examples (20 existing + 6 new)
+            # 26 open examples
             *["open"] * 26,
-            # 26 notes examples (20 existing + 6 new)
+            # 26 notes examples
             *["notes"] * 26,
-            # 26 read examples (20 existing + 6 new)
+            # 26 read examples
             *["read"] * 26,
-            # 26 code examples (20 existing + 6 new)
+            # 26 code examples
             *["code"] * 26,
-            # 26 study examples (20 existing + 6 new)
-            *["study"] * 26
+            # 26 study examples
+            *["study"] * 26,
+            # 26 switchoff examples
+            *["switchoff"] * 26
         ]
 
         self.vectorizer = TfidfVectorizer()
