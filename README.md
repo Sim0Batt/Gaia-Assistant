@@ -3,47 +3,55 @@
 Gaia Assistant is a personal assistant application that integrates various functionalities such as note-taking, calendar management, task management, and more. It leverages Google APIs, Firebase, and machine learning models to provide a comprehensive assistant experience.
 
 ## Project Structure
-Gaia-Assistant/
+Gaia-Assistant
+├── aether
+│   ├── db.sqlite3
+│   ├── gaia_api
+│   │   ├── asgi.py
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── manage.py
+│   └── rest_api
+│       ├── admin.py
+│       ├── apps.py
+│       ├── __init__.py
+│       ├── migrations
+│       │   └── __init__.py
+│       ├── models.py
+│       ├── tests.py
+│       └── views.py
+├── apollo
+│   └── AI.py
 ├── app.py
-├── gaia_request_app.py
+├── eleuthia
+│   ├── credentials.json
+│   ├── drive.py
+│   ├── todays_pdf
+│   │   └── Analisi 2 2025.pdf
+│   └── token.pickle
+├── ephaestus
+│   ├── summarize_class.py
+│   └── summarizer.py
 ├── gaia.py
-├── gaiaRequests.py
-├── __pycache__/
-├── aether/
-│   ├── db.sqlite3
-│   ├── manage.py
-│   ├── gaia_api/
-│   │   ├── __init__.py
-│   │   ├── asgi.py
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   ├── wsgi.py
-│   ├── rest_api/
-│   │   ├── ...
-├── apollo/
-│   ├── AI.py
-├── eleuthia/
-│   ├── drive.py
-│   ├── todays_pdf/
-│   │   ├── ...
-├── ephaestus/
-│   ├── summarize_class.py
-│   ├── summarizer.py
-├── minerva/
-│   ├── assets/
-│   ├── notesReferences/
-│   │   ├── linkToNotes.csv
-│   │   ├── notes.py
-│   ├── readCalendar/
-│   │   ├── app.py
-│   │   ├── readCalendar.py
-│   ├── todos/
-│   │   ├── openTodo.py
-│   │   ├── getTodos.py
-│   │   ├── todo.py
-├── utils/
-│   ├── terminalGaia.py
-│   ├── test.py
+├── gaia_request_app.py
+├── minerva
+│   ├── assets
+│   │   ├── icon.png
+│   │   ├── iconResized.png
+│   │   └── minerva.ico
+│   ├── readCalendar
+│   │   ├── app.py
+│   │   └── readCalendar.py
+│   └── todos
+│       ├── getTodos.py
+│       ├── openTodo.py
+│       └── todo.py
+├── README.md
+└── requirements.txt
+
+
 
 ## Features
 
@@ -59,7 +67,7 @@ Gaia-Assistant/
 
 1. **Clone the repository**:
     ```sh
-    git clone https://github.com/yourusername/Gaia-Assistant.git
+    git clone https://github.com/Sim0Batt/Gaia-Assistant
     cd Gaia-Assistant
     ```
 

@@ -28,6 +28,8 @@ from ephaestus.summarize_class import Summarizer as sm
 
 
 
+
+
 db = firestore.client()
 def chooseAccount(decision):
     if decision == 1:
@@ -35,6 +37,8 @@ def chooseAccount(decision):
     elif decision == 2:
         accountDoc = "simone.battisti.fm@gmail.com"
     return accountDoc
+
+
 
 def show_input_dialog():
     root = tk.Tk()
@@ -68,7 +72,7 @@ def open_popup(content, width, height):
 
 def open_app(list_of_words):
     if 'firefox' in list_of_words:
-        subprocess.run(["gnome-terminal", "--", "bash", "-c", "python /home/simone/gaia/utils/open_firefox.py"])
+        subprocess.run(["gnome-terminal", "--", "bash", "-c", "firefox -new-window; exit"])
 
         return "opened Firefox"
     elif 'code' in list_of_words:
@@ -87,18 +91,25 @@ def open_notes():
     subprocess.run(["gnome-terminal", "--", "bash", "-c", "emacs /home/simone/università/appuntiLatex/"])
 
 
-def open_todo():
-    accountDoc = ""
+def read_todo():
+    account_doc = ""
     decision = simpledialog.askstring("Input", "Inserisci account (1 - 2):") 
     while(int(decision) < 1 and int(decision) > 2):
         decision = simpledialog.askstring("Input", "Inserisci account (1 - 2):") 
-    accountDoc = chooseAccount(int(decision))
-    todo_ref = db.collection((accountDoc))
-    todos = fl(accountDoc)
+    account_doc = chooseAccount(int(decision))
+    todo_ref = db.collection((account_doc))
+    todo_ref = fl(account_doc)
     time.sleep(0.75)
-    content = todos.get_data_string()
+    content = todo_ref.get_data_string()
     open_popup(content, 300, 400)
     return "reded todo"
+
+def open_todo():
+    account_doc = "1"
+    todo_ref = fl(account_doc)
+    time.sleep(0.75)
+    todo_ref.run_todos()
+    
 
 def init_request(request):
     return request.lower().replace("gaia", "").strip()
@@ -130,7 +141,7 @@ class Gaia():
             elif predict == "notes" or predict == "study":
                 open_notes()
             elif predict == "read":
-                open_todo()
+                read_todo()
                 return "opened todo"
             elif predict == "code":
                 generated_code = self.ai_reference.generate_code(text_in)

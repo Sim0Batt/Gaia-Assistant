@@ -31,7 +31,12 @@ class Summarizer:
             "Start Spotify", "Open system preferences", "Launch the game",
             "Start the media player", "Open task manager",
             "Hey, open this for me", "Can ya start this app?", "Fire up Netflix",
-            "Lemme see that file", "Just open it", "Pull this up for me",
+            "Lemme see that file", "Just open it", "Pull this up for me", "I need you to open this",
+            "I want to see this", "Open this up for me", "Start this up",
+            "Open my app", "Launch this program", "Start my application",
+            "Open this software", "Run this program", "Start the program",
+            "Open that application", "Launch my software", "Get this running",
+            "Open the program for me", "Start this software",
 
             # Notes category
             "Take some notes for me.", "Save this information.", "Write this down.",
@@ -50,7 +55,7 @@ class Summarizer:
             "Please read this document.", "Fetch the latest updates.", "Read the book summary.",
             "Show me the article.", "Check for recent messages.", "Can you read my messages?",
             "Read the recent notifications.", "Pull up the article on machine learning.", "Read my schedule",
-            "Check the blog post", "Show today's agenda", "Read the documentation",
+            "Check the blog post", "Read the documentation",
             "Browse through papers", "Check the latest posts",
             "Give this a read", "What's this saying?", "Check this out for me",
             "Help me read through this", "What's new today?", "Gimme the latest",
@@ -94,11 +99,11 @@ class Summarizer:
 
         y_train = [
             # 26 open examples
-            *["open"] * 26,
+            *["open"] * 41,
             # 26 notes examples
             *["notes"] * 26,
             # 26 read examples
-            *["read"] * 26,
+            *["read"] * 25,
             # 26 code examples
             *["code"] * 26,
             # 26 study examples

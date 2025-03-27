@@ -124,6 +124,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://gaiaassistant.netlify.app",
     "https://127.0.0.1:8000",
     "http://localhost:8000",
+
 ]
 
 CORS_ALLOW_METHODS = [
