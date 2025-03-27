@@ -3,6 +3,7 @@
 Gaia Assistant is a personal assistant application that integrates various functionalities such as note-taking, calendar management, task management, and more. It leverages Google APIs, Firebase, and machine learning models to provide a comprehensive assistant experience.
 
 ## Project Structure
+```
 Gaia-Assistant
 ├── aether
 │   ├── db.sqlite3
@@ -50,7 +51,7 @@ Gaia-Assistant
 │       └── todo.py
 ├── README.md
 └── requirements.txt
-
+```
 
 
 ## Features
