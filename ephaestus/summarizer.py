@@ -5,14 +5,16 @@ summarizer = Summarizer()
 
 # Test the model
 test_phrases = [
-    "Write a Python script.",
-    "Show me the latest articles.",
-    "Launch the calculator app.",
+    "write a Python script.",
+    "show me the latest articles.",
+    "launch the calculator app.",
     "open firefox",
     "need to study",
     "power off the computer",
-    "open my agenda",
+    "open the agenda",
     "read my todos",
+    "i need to read my notes",
+    "i want to make new notes"
 ]
 
 summarizer._train_new_model()
